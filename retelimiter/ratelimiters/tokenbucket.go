@@ -1,6 +1,7 @@
 package ratelimiters
 
 import (
+	"sync"
 	"time"
 )
 
@@ -9,6 +10,7 @@ type TokenBucket struct {
 	duration time.Duration
 	tokens   int
 	lastfill time.Time
+	mu       sync.Mutex
 }
 
 func NewTokenBucket(limit int, duration time.Duration) *TokenBucket {
@@ -21,5 +23,23 @@ func NewTokenBucket(limit int, duration time.Duration) *TokenBucket {
 }
 
 func (t *TokenBucket) Allow() bool {
-	return true
+	now := time.Now()
+	t.mu.Lock()
+	defer t.mu.Unlock()
+	// cal time passed
+	timePassed := now.Sub(t.lastfill)
+	rate := float64(t.limit) / timePassed.Seconds()
+	newTokens := timePassed.Seconds() * rate
+
+	if newTokens > 0 {
+		t.tokens = min(t.limit, t.tokens+int(newTokens))
+		t.lastfill = now
+	}
+	if t.tokens >= 1 {
+		t.tokens--
+		return true
+
+	}
+	return false
+
 }

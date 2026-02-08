@@ -11,6 +11,10 @@ func NewRateLimiter(name string, limit int, duration time.Duration) (ratelimiter
 	switch name {
 	case "token-bucket":
 		return ratelimiters.NewTokenBucket(limit, duration), nil
+	case "sliding-window":
+		return ratelimiters.NewSlidingWindow(limit, duration), nil
+	case "fixed-window":
+		return ratelimiters.NewFixedWindow(limit, duration), nil
 	default:
 		return nil, fmt.Errorf("no such limiter")
 	}
