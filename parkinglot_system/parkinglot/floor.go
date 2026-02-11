@@ -11,7 +11,11 @@ import (
 type Floor struct {
 	Id      int
 	Space   map[vehicle.VehicleType]int
-	tickets map[int]*ticket.Ticket
+	Tickets map[int]*ticket.Ticket
+}
+
+func (f *Floor) AddSpace(vt vehicle.VehicleType, cnt int) {
+	f.Space[vt] = cnt
 }
 
 func (f *Floor) Park(v vehicle.Vehicle) (*ticket.Ticket, error) {
@@ -25,17 +29,18 @@ func (f *Floor) Park(v vehicle.Vehicle) (*ticket.Ticket, error) {
 			VehidleId: v.GetId(),
 			EntryTime: time.Now(),
 		}
-		f.tickets[v.GetId()] = tkt
+		f.Tickets[v.GetId()] = tkt
 		return tkt, nil
 	}
 	return nil, fmt.Errorf("no space available")
 }
 
 func (f *Floor) UnPark(v vehicle.Vehicle) (*ticket.Ticket, bool) {
-	tkt, ok := f.tickets[v.GetId()]
+	tkt, ok := f.Tickets[v.GetId()]
 	if !ok {
 		return nil, false
 	}
-	tkt.EntryTime = time.Now()
+	tkt.ExitTime = time.Now()
+	f.Space[v.IsType()]++
 	return tkt, true
 }
