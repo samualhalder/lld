@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/samualhalder/lld/parkinglot_system/parkinglot"
+	"github.com/samualhalder/lld/parkinglot_system/payment"
 	"github.com/samualhalder/lld/parkinglot_system/ticket"
 	"github.com/samualhalder/lld/parkinglot_system/vehicle"
 )
@@ -66,8 +67,9 @@ func main() {
 	parkinglot.ParkVehicle(bike)
 	parkinglot.ParkVehicle(truck1)
 	time.Sleep(time.Second * 2)
-	// tkt, _ := parkinglot.UnParkVehicle(truck1)
-	// fmt.Println("amoumt", tkt.Amount)
+	upi := &payment.Upi{}
+	tkt, _ := parkinglot.UnParkVehicle(truck1, upi)
+	fmt.Println("amoumt", tkt.Amount, "status", tkt.PaymentStatus)
 	_, err = parkinglot.ParkVehicle(truck2)
 	if err != nil {
 		fmt.Println(err.Error())
