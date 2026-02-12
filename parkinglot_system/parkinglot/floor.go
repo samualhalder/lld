@@ -44,3 +44,11 @@ func (f *Floor) UnPark(v vehicle.Vehicle) (*ticket.Ticket, bool) {
 	f.Space[v.IsType()]++
 	return tkt, true
 }
+
+func (f *Floor) IsParked(v vehicle.Vehicle) (*ticket.Ticket, bool) {
+	tkt, ok := f.Tickets[v.GetId()]
+	if !ok {
+		return nil, false
+	}
+	return tkt, true
+}
