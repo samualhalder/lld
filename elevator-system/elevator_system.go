@@ -18,4 +18,7 @@ func (e *ElevatorSystem) RequestElc(floor int, dir models.Direction) {
 	}
 	elv := e.schedule.SelectElevator(req, e.Elevator)
 	elv.AddRequest(req)
+	if elv.State != models.Idle {
+		elv.Move()
+	}
 }

@@ -1,7 +1,16 @@
 package models
 
+type State int
+
+const (
+	Idle State = iota
+	GoingUp
+	GoingDown
+)
+
 type Elevator struct {
 	Id              int
+	State           State
 	CurrentFloor    int
 	Direction       Direction
 	MaxFloors       int
@@ -17,6 +26,6 @@ func (e *Elevator) AddStop(fl int) {
 }
 func (e *Elevator) Move() {
 	// for len(e.externalRequest) > 0 || len(e.internalRequest) > 0 {
-		
+
 	// }
 }
