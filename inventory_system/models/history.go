@@ -4,8 +4,7 @@ type History struct {
 	logs []*Log
 }
 
-func (h *History) Add(product *Product, opType Operation) {
-	log := NewLog(product.SKU, opType)
+func (h *History) Add(log *Log) {
 	h.logs = append(h.logs, log)
 }
 

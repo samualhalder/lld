@@ -13,7 +13,7 @@ const (
 type Product struct {
 	SKU      int
 	Name     string
-	quantity int
+	Quantity int
 	price    int
 	Category Category
 }
@@ -23,7 +23,7 @@ func NewProduct(sku int, name string, price int) *Product {
 		SKU:      sku,
 		Name:     name,
 		price:    price,
-		quantity: 0,
+		Quantity: 0,
 	}
 }
 
@@ -32,13 +32,13 @@ func (p *Product) SetPrice(price int) {
 }
 
 func (p *Product) AddQuantity(qn int) {
-	p.quantity += qn
+	p.Quantity += qn
 }
 
 func (p *Product) RemQuantity(qn int) error {
-	if qn > p.quantity {
+	if qn > p.Quantity {
 		return fmt.Errorf("Stock not available to remove")
 	}
-	p.quantity -= qn
+	p.Quantity -= qn
 	return nil
 }

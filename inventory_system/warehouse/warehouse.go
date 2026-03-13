@@ -3,19 +3,21 @@ package warehouse
 import (
 	"fmt"
 
+	"github.com/samualhalder/lld/inventory_system/alert"
 	"github.com/samualhalder/lld/inventory_system/models"
 )
 
 type WareHouse struct {
 	ID       int
 	products map[int]*models.Product
-	// alert
+	Alert    alert.Alert
 }
 
-func NewWareHouse(id int) *WareHouse {
+func NewWareHouse(id int, alertStretary alert.Alert) *WareHouse {
 	return &WareHouse{
 		ID:       id,
 		products: make(map[int]*models.Product),
+		Alert:    alertStretary,
 	}
 }
 
@@ -35,7 +37,12 @@ func (w *WareHouse) Rem(id, queantity int) (error, *models.Log) {
 	if !ok {
 		return fmt.Errorf("No product is stroed in stock"), nil
 	}
-	err := pr.RemQuantity(queantity)
+	currQn := pr.Quantity
+	err := w.Alert.MakeAllert(currQn - queantity)
+	if err != nil {
+		return err, nil
+	}
+	err = pr.RemQuantity(queantity)
 	if err != nil {
 		return err, nil
 	}
