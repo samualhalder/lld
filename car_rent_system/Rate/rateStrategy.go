@@ -1,7 +1,9 @@
 package rate
 
-import "github.com/samualhalder/lld/car_rent_system/vehicles"
+import (
+	booking "github.com/samualhalder/lld/car_rent_system/Booking"
+)
 
 type RateStretagy interface {
-	FindRate(vehicle *vehicles.Vehicle) (int, error)
+	FindRate(booking *booking.Booking) (int, error)
 }
