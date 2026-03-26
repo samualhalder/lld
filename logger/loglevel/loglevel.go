@@ -1,5 +1,7 @@
 package loglevel
 
+import "github.com/samualhalder/lld/logger/appender"
+
 type LogLevel int
 
 const (
@@ -12,6 +14,8 @@ const (
 
 type LogLevelI interface {
 	Log(LogLevel, string)
-	Notify(string)
+	Notify(string, string)
 	Next() LogLevelI
+	Is(LogLevel) bool
+	Subs(appender.Appernder)
 }

@@ -1,16 +1,29 @@
 package loglevel
 
+import "github.com/samualhalder/lld/logger/appender"
+
 type BaseLogLevel struct {
-	Appenders []int
+	Appenders map[appender.Appernder]int
 	NextLevel LogLevelI
 }
 
-func (b *BaseLogLevel) Notify(message string) {
-	for _, app := range b.Appenders {
-		app += 1 // TODO: have to call append method of each appender
+func NewBaseLogLevel() *BaseLogLevel {
+	return &BaseLogLevel{
+		Appenders: make(map[appender.Appernder]int),
+		NextLevel: nil,
+	}
+}
+
+func (b *BaseLogLevel) Notify(message string, level string) {
+	for app, _ := range b.Appenders {
+		app.Append(message, level)
 	}
 }
 
 func (b *BaseLogLevel) Next() LogLevelI {
 	return b.NextLevel
+}
+
+func (b *BaseLogLevel) Subs(appender appender.Appernder) {
+	b.Appenders[appender] = 1
 }
