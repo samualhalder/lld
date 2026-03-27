@@ -11,7 +11,7 @@ import (
 type FileAppender struct {
 	Formatter formatter.Formatter
 	filePath  string
-	mu        *sync.RWMutex
+	mu        sync.Mutex
 }
 
 func NewFileAppender(Formatter formatter.Formatter, filePath string) *FileAppender {
@@ -22,7 +22,7 @@ func NewFileAppender(Formatter formatter.Formatter, filePath string) *FileAppend
 }
 
 func (f *FileAppender) Append(text string, level string) error {
-	f.mu.RLocker()
+	f.mu.Lock()
 	formatt := f.Formatter.Format(text, level)
 	str := fmt.Sprintf("%v\n", formatt)
 	file, err := os.OpenFile(f.filePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
@@ -31,6 +31,6 @@ func (f *FileAppender) Append(text string, level string) error {
 	}
 	defer file.Close()
 	file.Write([]byte(str))
-	f.mu.RLocker().Unlock()
+	f.mu.Unlock()
 	return nil
 }
