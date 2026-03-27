@@ -16,7 +16,8 @@ func NewConsoleAppender(formatter formatter.Formatter) *ConsoleAppender {
 	}
 }
 
-func (c *ConsoleAppender) Append(messg string, level string) {
+func (c *ConsoleAppender) Append(messg string, level string) error {
 	// TODO: first format the string then
 	fmt.Println(c.Formatter.Format(messg, level))
+	return nil
 }

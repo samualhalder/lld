@@ -1,5 +1,5 @@
 package appender
 
 type Appernder interface {
-	Append(string, string)
+	Append(string, string) error
 }
