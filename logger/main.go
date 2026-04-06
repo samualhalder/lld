@@ -12,6 +12,7 @@ func main() {
 	logger.Subscribe(loglevel.Debug, appender.NewConsoleAppender(formatter.NewTextFormatter()))
 	logger.Subscribe(loglevel.Error, appender.NewConsoleAppender(formatter.NewTextFormatter()))
 	logger.Subscribe(loglevel.Error, appender.NewFileAppender(formatter.NewTextFormatter(), "logs.txt"))
+	logger.Subscribe(loglevel.Info, appender.NewFileAppender(formatter.NewTextFormatter(), "logs.txt"))
 
 	logger.Debug("its a debug")
 	logger.Info("Its a test comment")
