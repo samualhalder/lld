@@ -5,23 +5,23 @@ import (
 	"maps"
 )
 
-type FiveHundred struct {
+type OneHundred struct {
 	Next DenominationI
 }
 
-func (f *FiveHundred) Handle(amount int, denominations map[DenominationType]int) (map[DenominationType]int, error) {
+func (f *OneHundred) Handle(amount int, denominations map[DenominationType]int) (map[DenominationType]int, error) {
 	usedDen := make(map[DenominationType]int)
-	availableCnt := denominations[FIVE_HUNDRED]
+	availableCnt := denominations[ONE_HUNDRED]
 
-	req := amount / 500
-	rem := amount % 500
+	req := amount / 100
+	rem := amount % 100
 	if availableCnt < req {
 		canUse := req - availableCnt
 		extra := req - canUse
-		rem = rem + extra*500
-		usedDen[FIVE_HUNDRED] = canUse
+		rem = rem + extra*100
+		usedDen[ONE_HUNDRED] = canUse
 	} else {
-		usedDen[FIVE_HUNDRED] = req
+		usedDen[ONE_HUNDRED] = req
 	}
 
 	if f.Next == nil && rem > 0 {

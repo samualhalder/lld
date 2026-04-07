@@ -4,16 +4,20 @@ import (
 	"fmt"
 
 	"github.com/samualhalder/lld/atm_machine/denomination"
+	"github.com/samualhalder/lld/atm_machine/models"
 )
 
 type Atm struct {
 	id            int
 	denominations map[denomination.DenominationType]int
+	State         AtmStateI
+	Card          *models.Card
 }
 
 func NewAtm(id int) *Atm {
 	return &Atm{
-		id: id,
+		id:    id,
+		State: &Idle{},
 	}
 }
 

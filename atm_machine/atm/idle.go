@@ -8,12 +8,12 @@ import (
 
 type Idle struct {
 	BaseAtmSt
+	
 }
 
-
-
 func (i *Idle) InsertCard(crd *models.Card) error {
-	// TODO: logic of Card inserted
+	i.atm.Card = crd
+	i.atm.State = &CardInserted{}
 	return nil
 }
 func (i *Idle) Validate(pin int) error {

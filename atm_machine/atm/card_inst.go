@@ -10,11 +10,8 @@ type CardInserted struct {
 	BaseAtmSt
 }
 
-
-
-
 func (i *CardInserted) InsertCard(crd *models.Card) error {
-	// TODO: logic of Card inserted
+
 	return fmt.Errorf("NA")
 }
 func (i *CardInserted) Validate(pin int) error {
