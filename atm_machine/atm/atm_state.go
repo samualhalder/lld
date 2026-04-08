@@ -24,5 +24,5 @@ type AtmStateI interface {
 	Validate(pin int) error
 	SelectOp(OpType) error
 	WithDraw(amount int) error
-	CheckBalance() (error, int)
+	CheckBalance() (int, error)
 }

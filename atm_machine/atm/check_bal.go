@@ -7,9 +7,9 @@ import (
 )
 
 type CheckBalance struct {
-	BaseAtmSt
+	// BaseAtmSt
+	atm *Atm
 }
-
 
 func (i *CheckBalance) InsertCard(crd *models.Card) error {
 	// TODO: logic of Card inserted
@@ -24,6 +24,7 @@ func (i *CheckBalance) SelectOp(OpType) error {
 func (i *CheckBalance) WithDraw(amount int) error {
 	return fmt.Errorf("NA")
 }
-func (i *CheckBalance) CheckBalance() (error, int) {
-	return fmt.Errorf("NA"), 0
+func (i *CheckBalance) CheckBalance() (int, error) {
+	return i.atm.bankDB.GetBalance(i.atm.Card.CardNumber), nil
+
 }

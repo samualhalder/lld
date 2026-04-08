@@ -7,7 +7,8 @@ import (
 )
 
 type WithDraw struct {
-	BaseAtmSt
+	// BaseAtmSt
+	atm *Atm
 }
 
 func (i *WithDraw) InsertCard(crd *models.Card) error {
@@ -21,8 +22,8 @@ func (i *WithDraw) SelectOp(OpType) error {
 	return fmt.Errorf("NA")
 }
 func (i *WithDraw) WithDraw(amount int) error {
-	return nil
+	return i.atm.bankDB.WithDraw(i.atm.Card.CardNumber, amount)
 }
-func (i *WithDraw) CheckBalance() (error, int) {
-	return fmt.Errorf("NA"), 0
+func (i *WithDraw) CheckBalance() (int, error) {
+	return 0, fmt.Errorf("NA")
 }

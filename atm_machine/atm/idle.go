@@ -7,13 +7,13 @@ import (
 )
 
 type Idle struct {
-	BaseAtmSt
-	
+	// BaseAtmSt
+	atm *Atm
 }
 
 func (i *Idle) InsertCard(crd *models.Card) error {
 	i.atm.Card = crd
-	i.atm.State = &CardInserted{}
+	i.atm.State = &Validate{atm: i.atm}
 	return nil
 }
 func (i *Idle) Validate(pin int) error {
@@ -25,6 +25,6 @@ func (i *Idle) SelectOp(OpType) error {
 func (i *Idle) WithDraw(amount int) error {
 	return fmt.Errorf("NA")
 }
-func (i *Idle) CheckBalance() (error, int) {
-	return fmt.Errorf("NA"), 0
+func (i *Idle) CheckBalance() (int,error) {
+	return 0,fmt.Errorf("NA")
 }
