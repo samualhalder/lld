@@ -3,7 +3,6 @@ package atm
 import (
 	"fmt"
 
-	"github.com/samualhalder/lld/atm_machine/denomination"
 	"github.com/samualhalder/lld/atm_machine/models"
 )
 
@@ -24,15 +23,18 @@ func (i *WithDraw) SelectOp(OpType) error {
 }
 func (i *WithDraw) WithDraw(amount int) error {
 	accNum := i.atm.bankDB.GetAccountNumber(i.atm.Card.CardNumber)
-	bal:=i.atm.bankDB.GetBalance(accNum)
-	if bal<amount{
+	bal := i.atm.bankDB.GetBalance(accNum)
+	if bal < amount {
 		return fmt.Errorf("insufficient balance")
 	}
-	_,err:= i.atm.SelectDenominations.Handle(amount,i.atm.denominations)
-	if err!=nil{
+	_, err := i.atm.SelectDenominations.Handle(amount, i.atm.denominations)
+	if err != nil {
 		return err
 	}
-	
+	if err := i.atm.bankDB.WithDraw(accNum, amount); err != nil {
+		return err
+	}
+	// here can be removed denominations
 	return nil
 }
 func (i *WithDraw) CheckBalance() (int, error) {
