@@ -9,17 +9,19 @@ import (
 )
 
 type Atm struct {
-	id            int
-	denominations map[denomination.DenominationType]int
-	State         AtmStateI
-	Card          *models.Card
-	bankDB        *repos.BankDB
+	id                  int
+	denominations       map[denomination.DenominationType]int
+	State               AtmStateI
+	Card                *models.Card
+	bankDB              *repos.BankDB
+	SelectDenominations denomination.DenominationI
 }
 
 func NewAtm(id int, bankDb *repos.BankDB) *Atm {
 	atm := &Atm{
-		id:     id,
-		bankDB: bankDb,
+		id:                  id,
+		bankDB:              bankDb,
+		SelectDenominations: &denomination.FiveHundred{},
 	}
 	state := &Idle{
 		atm: atm,
