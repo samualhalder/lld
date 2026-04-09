@@ -8,14 +8,19 @@ import (
 
 type BankDB struct {
 	accounts map[int]*models.Account
-	pins     map[int]int
+
+	cardToAccount map[int]int
 }
 
 func NewBankDB() *BankDB {
 	return &BankDB{
-		accounts: make(map[int]*models.Account),
-		pins:     make(map[int]int),
+		accounts:      make(map[int]*models.Account),
+		cardToAccount: make(map[int]int),
 	}
+}
+
+func (b *BankDB) GetAccountNumber(cardNumber int) int {
+	return b.cardToAccount[cardNumber]
 }
 
 func (b *BankDB) GetBalance(accNum int) int {

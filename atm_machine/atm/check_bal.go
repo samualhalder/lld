@@ -25,6 +25,8 @@ func (i *CheckBalance) WithDraw(amount int) error {
 	return fmt.Errorf("NA")
 }
 func (i *CheckBalance) CheckBalance() (int, error) {
-	return i.atm.bankDB.GetBalance(i.atm.Card.CardNumber), nil
+	accNum := i.atm.bankDB.GetAccountNumber(i.atm.Card.CardNumber)
+
+	return i.atm.bankDB.GetBalance(accNum), nil
 
 }

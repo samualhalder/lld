@@ -59,9 +59,22 @@ func (a *Atm) SelectOperation(optype OpType) error {
 }
 
 func (a *Atm) CheckBal() (int, error) {
-	return a.State.CheckBalance()
+	bal, err := a.State.CheckBalance()
+	a.eject()
+	if err != nil {
+		return 0, err
+	}
+	return bal, nil
 }
 
 func (a *Atm) WithDraw(amount int) error {
-	return a.State.WithDraw(amount)
+	a.State.WithDraw(amount)
+	a.eject()
+	return nil
+}
+
+func (a *Atm) eject() error {
+	a.State = &Idle{atm: a}
+	a.Card = nil
+	return nil
 }

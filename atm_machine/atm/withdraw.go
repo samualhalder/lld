@@ -22,7 +22,8 @@ func (i *WithDraw) SelectOp(OpType) error {
 	return fmt.Errorf("NA")
 }
 func (i *WithDraw) WithDraw(amount int) error {
-	return i.atm.bankDB.WithDraw(i.atm.Card.CardNumber, amount)
+	accNum := i.atm.bankDB.GetAccountNumber(i.atm.Card.CardNumber)
+	return i.atm.bankDB.WithDraw(accNum, amount)
 }
 func (i *WithDraw) CheckBalance() (int, error) {
 	return 0, fmt.Errorf("NA")
