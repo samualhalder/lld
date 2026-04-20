@@ -47,3 +47,17 @@ func (t *Theater) GetMovieSlot(movieName string, date time.Time) []*Slot {
 	}
 	return slots
 }
+
+func (t *Theater) SelectSeat(user *User, slot *Slot, seats []*Seat) (book, error) {
+	// TODO: make this seat booking strategy more complex
+	for _, seat := range seats {
+		if seat.Booked {
+			return nil, fmt.Errorf("seat is booked")
+		}
+		if error := slot.LockSeat(seat, user); error != nil {
+			return nil, error
+		}
+	}
+
+	return nil, nil
+}
