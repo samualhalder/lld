@@ -35,3 +35,15 @@ func (s *Slot) LockSeat(seat *Seat, user *User) error {
 	}
 	return nil
 }
+
+func (s *Slot) IsLockedBy(seat *Seat, user *User) bool {
+	userId := s.LockingStrategy.LockedBy(s.Id, seat.Id)
+	return userId == user.Id
+}
+
+func (s *Slot) IsLocked(seat *Seat) bool {
+	if !s.LockingStrategy.IsLocked(s.Id, seat.Id) || s.LockingStrategy.IsExpired(s.Id, seat.Id) {
+		return false
+	}
+	return true
+}

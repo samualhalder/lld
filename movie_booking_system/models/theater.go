@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/samualhalder/lld/movie_booking_system/enums"
 	"github.com/samualhalder/lld/movie_booking_system/utils"
 )
 
@@ -48,8 +49,9 @@ func (t *Theater) GetMovieSlot(movieName string, date time.Time) []*Slot {
 	return slots
 }
 
-func (t *Theater) SelectSeat(user *User, slot *Slot, seats []*Seat) (book, error) {
+func (t *Theater) SelectSeat(user *User, slot *Slot, seats []*Seat) (*Booking, error) {
 	// TODO: make this seat booking strategy more complex
+	var totalCoast int
 	for _, seat := range seats {
 		if seat.Booked {
 			return nil, fmt.Errorf("seat is booked")
@@ -57,7 +59,29 @@ func (t *Theater) SelectSeat(user *User, slot *Slot, seats []*Seat) (book, error
 		if error := slot.LockSeat(seat, user); error != nil {
 			return nil, error
 		}
+		totalCoast += seat.Price
 	}
+	booking := &Booking{
+		Theater: t,
+		Slot:    slot,
+		Seats:   seats,
+		User:    user,
+		Total:   totalCoast,
+		Paid:    false,
+		Status:  enums.Initiated,
+	}
+	return booking, nil
+}
 
-	return nil, nil
+func (t *Theater) ConfirmSeat(user *User, slot *Slot, seats []*Seat) error {
+	for _, seat := range seats {
+		if !slot.IsLocked(seat) {
+			return fmt.Errorf("seat is not selected")
+		}
+		if !slot.IsLockedBy(seat, user) {
+			return fmt.Errorf("no locked by this user")
+		}
+		seat.Booked = true
+	}
+	return nil
 }

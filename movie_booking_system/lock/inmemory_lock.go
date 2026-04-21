@@ -60,3 +60,8 @@ func (i *InMemeoryLock) IsLocked(slotId string, seatId string) bool {
 func (i *InMemeoryLock) createKey(slotId string, seatId string) string {
 	return fmt.Sprint(slotId + "#" + seatId)
 }
+
+func (i *InMemeoryLock) LockedBy(slotId string, seatid string) string {
+	key := i.createKey(slotId, seatid)
+	return i.keys[key]
+}

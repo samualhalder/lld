@@ -5,4 +5,5 @@ type Lock interface {
 	RelaseLock(slotId string, seatId string) error
 	IsExpired(slotId string, seatId string) bool
 	IsLocked(slotId string, seatId string) bool
+	LockedBy(slotId string,seatid string) string
 }
